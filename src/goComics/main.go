@@ -7,13 +7,18 @@ import (
 )
 
 
-func main() {
-	url := "https://gobyexample.com/"
+func getHTML(url string)[]byte{
+	fmt.Println("Ściągam " + url)
 	resp, err := http.Get(url)
 	if err != nil { panic(err) }
 	defer resp.Body.Close()
-
-	fmt.Println("Witaj świecie!")
 	body, err := ioutil.ReadAll(resp.Body)
-	err = ioutil.WriteFile("output.txt", body, 0644)
+	return body
+}
+
+
+func main() {
+	url := "https://gobyexample.com/"
+	body := getHTML(url)
+	ioutil.WriteFile("output.txt", body, 0644)
 }
