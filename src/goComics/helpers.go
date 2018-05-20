@@ -31,3 +31,16 @@ func GetDocument(url string) (*goquery.Document, error){
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	return doc, err
 }
+
+
+func GetImagesSrcList(url string)[]string{
+	doc, err := GetDocument(url)
+	if err != nil { panic(err) }
+
+	slice := make([]string, 0)
+	doc.Find("img").Each(func(i int, s *goquery.Selection){
+		imgUrl, _ := s.Attr("src")
+		slice = append(slice, imgUrl)
+	})
+	return slice
+}
