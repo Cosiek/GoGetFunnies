@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 
 func main() {
-	url := "http://buttersafe.com/"
-	GetImagesSrcList(url)
-	fmt.Println("Done.")
+	date := time.Now()
+	fmt.Println("Starting")
+	fmt.Println(Buttersafe(date))
+	fmt.Println("Done")
 }

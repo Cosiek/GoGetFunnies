@@ -2,7 +2,7 @@ package main
 
 import (
 	"io/ioutil"
-	"fmt"
+	//"fmt"
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
@@ -10,7 +10,6 @@ import (
 
 
 func GetResponse(url string) *http.Response {
-	fmt.Println("Ściągam " + url)
 	resp, err := http.Get(url)
 	if err != nil { panic(err) }
 	// TODO: check response status
