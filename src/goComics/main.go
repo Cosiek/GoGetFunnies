@@ -11,8 +11,8 @@ import (
 func main() {
 	// definitions
 	definitions := make([]Comic, 0)
-	definitions = append(definitions, Comic{"buttersafe", "http://buttersafe.com/", Buttersafe})
-	definitions = append(definitions, Comic{"Hagar the Horrible", "http://hagarthehorrible.com/", HagarTheHorrible})
+	definitions = append(definitions, GetComic("buttersafe", "http://buttersafe.com/", Buttersafe))
+	definitions = append(definitions, GetComic("Hagar the Horrible", "http://hagarthehorrible.com/", HagarTheHorrible))
 	// gathering data
 	date := time.Now()
 	fmt.Println("Starting")
