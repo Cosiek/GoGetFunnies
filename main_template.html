@@ -2,9 +2,12 @@
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type">
     <link title="Default Comics" media="screen" href="comics.css" type="text/css" rel="stylesheet">
-    <title>{{.Year}}_{{.Month}}_{{.Day}}</title>
+    <title>{{.Date.Year}}_{{.Date.Month}}_{{.Date.Day}}</title>
   </head>
   <body text="#000000" link="#ff00ff" bgcolor="#ffffff">
-    <h1>CONTENT</h1>
+    {{range .Comics}}
+      <h1>{{.Name}}</h1>
+      <h2>{{.Url}}</h2>
+    {{end}}
   </body>
 </html>

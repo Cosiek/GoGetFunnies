@@ -8,6 +8,12 @@ import (
 )
 
 
+type TemplateContext struct {
+	Date time.Time
+	Comics []Comic
+}
+
+
 func main() {
 	// definitions
 	definitions := make([]Comic, 0)
@@ -17,14 +23,16 @@ func main() {
 	date := time.Now()
 	fmt.Println("Starting")
 	for _, comic := range definitions{
-		fmt.Println(comic.Name)
+		comic.HTML = comic.Function(date)
+		fmt.Println(comic.Name, comic.HTML)
 	}
 	fmt.Println("Rendering output")
 	templ, err := template.ParseFiles("main_template.html")
 	if err != nil { panic(err) }
-	outFile, err := os.Create("komiksy.htm")
+	outFile, err := os.Create("komiksy.html")
 	if err != nil { panic(err) }
-	err = templ.Execute(outFile, date)
+	ctx := TemplateContext{date, definitions}
+	err = templ.Execute(outFile, ctx)
 	if err != nil { panic(err) }
 	outFile.Close()
 	fmt.Println("Done")
