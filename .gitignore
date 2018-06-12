@@ -1,0 +1,8 @@
+
+# compiled program
+goComics
+
+# output files
+archive/*
+komiksy.html
+comics.css
