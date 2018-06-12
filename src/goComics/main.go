@@ -26,6 +26,7 @@ func main() {
 		comic.HTML = comic.Function(date)
 		fmt.Println(comic.Name, comic.HTML)
 	}
+	// rendering output file
 	fmt.Println("Rendering output")
 	templ, err := template.ParseFiles("main_template.html")
 	if err != nil { panic(err) }
@@ -35,5 +36,10 @@ func main() {
 	err = templ.Execute(outFile, ctx)
 	if err != nil { panic(err) }
 	outFile.Close()
+	// saving an archive file
+	os.Mkdir("archive/", os.ModeDir)
+	dst := "archive/" + date.Format("2006-01-02") + ".html"
+	err = CopyFile("komiksy.html", dst)
+	if err != nil { panic(err) }
 	fmt.Println("Done")
 }

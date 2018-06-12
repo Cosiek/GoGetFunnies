@@ -1,9 +1,11 @@
 package main
 
 import (
+	"io"
 	"io/ioutil"
 	//"fmt"
 	"net/http"
+	"os"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -42,4 +44,19 @@ func GetImagesSrcList(url string)[]string{
 		slice = append(slice, imgUrl)
 	})
 	return slice
+}
+
+func CopyFile(src, dst string) error {
+    in, err := os.Open(src)
+    if err != nil { return err }
+
+    out, err := os.Create(dst)
+    if err != nil { return err }
+
+    _, err = io.Copy(out, in)
+    if err != nil { return err }
+
+		in.Close()
+    out.Close()
+		return nil
 }
