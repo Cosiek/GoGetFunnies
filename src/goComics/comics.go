@@ -7,8 +7,8 @@ import (
 )
 
 
-func Buttersafe(date time.Time)string{
-	url := "http://buttersafe.com/"
+func Buttersafe(date time.Time, comic Comic)string{
+	url := comic.Url
 	fmt.Printf("buttersafe....")
 	imgSources := GetImagesSrcList(url)
 	fmt.Println("OK")
@@ -16,8 +16,8 @@ func Buttersafe(date time.Time)string{
 }
 
 
-func HagarTheHorrible(date time.Time)string{
-	url := "http://hagarthehorrible.com/"
+func HagarTheHorrible(date time.Time, comic Comic)string{
+	url := comic.Url
 	fmt.Printf("Hagar the Horrible....")
 	imgSources := GetImagesSrcList(url)
 	for _, element := range imgSources{

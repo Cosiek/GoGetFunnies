@@ -23,7 +23,7 @@ func main() {
 	date := time.Now()
 	fmt.Println("Starting")
 	for _, comic := range definitions{
-		comic.HTML = comic.Function(date)
+		comic.HTML = comic.Function(date, comic)
 		fmt.Println(comic.Name, comic.HTML)
 	}
 	// rendering output file
