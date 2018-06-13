@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"io"
 	"io/ioutil"
 	//"fmt"
 	"net/http"
 	"os"
+	"text/template"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -59,4 +61,13 @@ func CopyFile(src, dst string) error {
 		in.Close()
     out.Close()
 		return nil
+}
+
+func renderStandardTemplate(ctx StdComicTemplateCtx)string{
+	templ, err := template.ParseFiles("std_segment.html")
+	if err != nil { panic(err) }
+	var rendered bytes.Buffer
+	err = templ.Execute(&rendered, ctx)
+	if err != nil { panic(err) }
+	return rendered.String()
 }

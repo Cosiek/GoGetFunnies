@@ -12,3 +12,9 @@ type Comic struct {
 func GetComic(name string, url string, function func(date time.Time, comic Comic)string) Comic {
   return Comic{name, url, function, ""}
 }
+
+type StdComicTemplateCtx struct {
+  Comic Comic
+  ImgSrc string
+  Title string
+}
