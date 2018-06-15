@@ -6,8 +6,7 @@
   </head>
   <body text="#000000" link="#ff00ff" bgcolor="#ffffff">
     {{range .Comics}}
-      <h1>{{.Name}}</h1>
-      <h2>{{.Url}}</h2>
+      {{.HTML}}
     {{end}}
   </body>
 </html>
