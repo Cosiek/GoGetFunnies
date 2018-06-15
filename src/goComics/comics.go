@@ -4,15 +4,31 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
+// comic functions
 
 func Buttersafe(date time.Time, comic Comic)string{
 	url := comic.Url
 	fmt.Printf("buttersafe....")
-	imgSources := GetImagesSrcList(url)
+
+	doc, err := GetDocument(url)
+	if err != nil { panic(err) }
 	fmt.Println("OK")
-	return imgSources[5]
+
+	imgUrl := "#"
+	title := "Fial :("
+	doc.Find("img").Each(func(i int, s *goquery.Selection){
+		_url, _ := s.Attr("src")
+		if strings.Contains(_url, "buttersafe.com/comics/"){
+			imgUrl = _url
+			title, _ = s.Attr("alt")
+		}
+	})
+	ctx := StdComicTemplateCtx{comic, imgUrl, title}
+	return renderStandardTemplate(ctx)
 }
 
 
