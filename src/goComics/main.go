@@ -22,9 +22,9 @@ func main() {
 	// gathering data
 	date := time.Now()
 	fmt.Println("Starting")
-	for _, comic := range definitions{
+	for i := 0; i < len(definitions); i++ {
+		comic := definitions[i]
 		comic.HTML = comic.Function(date, comic)
-		fmt.Println(comic.Name, comic.HTML)
 	}
 	// rendering output file
 	fmt.Println("Rendering output")
