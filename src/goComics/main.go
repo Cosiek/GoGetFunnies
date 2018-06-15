@@ -24,7 +24,7 @@ func main() {
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
 		comic := definitions[i]
-		comic.HTML = comic.Function(date, comic)
+		definitions[i].HTML = comic.Function(date, comic)
 	}
 	// rendering output file
 	fmt.Println("Rendering output")
