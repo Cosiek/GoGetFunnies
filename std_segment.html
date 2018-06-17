@@ -11,5 +11,7 @@
   <div class="comic">
     <img src="{{.ImgSrc}}" class="comic">
   </div>
-  <div class="descr">{{.Title}}</div>
+  {{ if .Title }}
+    <div class="descr">{{.Title}}</div>
+  {{ end }}
 </div>
