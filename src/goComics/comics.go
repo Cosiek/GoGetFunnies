@@ -49,6 +49,7 @@ func HagarTheHorrible(date time.Time, comic Comic)string{
 
 
 func GoComics(date time.Time, comic Comic)string{
+	fmt.Printf(comic.Name + "....")
 	// make tight url for passed date
 	// (like https://www.gocomics.com/calvinandhobbes/2018/06/16)
 	url := comic.Url + date.Format("2006/01/02")
@@ -65,6 +66,7 @@ func GoComics(date time.Time, comic Comic)string{
 		}
 	}
 	// render standard template
+	fmt.Println("Ok")
 	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
 	return renderStandardTemplate(ctx)
 }
