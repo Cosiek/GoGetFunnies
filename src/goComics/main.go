@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"text/template"
 	"time"
 )
@@ -40,6 +41,9 @@ func main() {
 	os.Mkdir("archive/", os.ModeDir)
 	dst := "archive/" + date.Format("2006-01-02") + ".html"
 	err = CopyFile("komiksy.html", dst)
+	if err != nil { panic(err) }
+	// open the browser
+	err = exec.Command("xdg-open", "komiksy.html").Start()
 	if err != nil { panic(err) }
 	fmt.Println("Done")
 }
