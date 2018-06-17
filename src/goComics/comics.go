@@ -45,3 +45,25 @@ func HagarTheHorrible(date time.Time, comic Comic)string{
 	fmt.Println("Fial")
 	return "Nope :("
 }
+
+
+func GoComics(date time.Time, comic Comic)string{
+	// make tight url for passed date
+	// (like https://www.gocomics.com/calvinandhobbes/2018/06/16)
+	url := comic.Url + date.Format("2006/01/02")
+	// get html
+	doc, err := GetDocument(url)
+	if err != nil { panic(err) }
+	// get picture data
+	found := doc.Find("meta[name$=image]")
+	node := found.Nodes[0]
+	var imgUrl string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "content"{
+			imgUrl = node.Attr[i].Val
+		}
+	}
+	// render standard template
+	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
+	return renderStandardTemplate(ctx)
+}
