@@ -36,10 +36,11 @@ func HagarTheHorrible(date time.Time, comic Comic)string{
 	url := comic.Url
 	fmt.Printf("Hagar the Horrible....")
 	imgSources := GetImagesSrcList(url)
-	for _, element := range imgSources{
-		if strings.Contains(element, "safr.kingfeatures.com/"){
+	for _, imgUrl := range imgSources{
+		if strings.Contains(imgUrl, "safr.kingfeatures.com/"){
 			fmt.Println("OK")
-			return element
+			ctx := StdComicTemplateCtx{comic, imgUrl, ""}
+			return renderStandardTemplate(ctx)
 		}
 	}
 	fmt.Println("Fial")
