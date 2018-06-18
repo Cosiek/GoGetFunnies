@@ -70,3 +70,29 @@ func GoComics(date time.Time, comic Comic)string{
 	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
 	return renderStandardTemplate(ctx)
 }
+
+
+func Xkcd(date time.Time, comic Comic)string{
+	fmt.Printf(comic.Name + "....")
+	// get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil { panic(err) }
+	// get node
+	found := doc.Find("img")
+	node := found.Nodes[1]
+	// get data
+	var imgUrl, title, alt string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = "https:" + node.Attr[i].Val
+		} else if node.Attr[i].Key == "alt"{
+			alt = node.Attr[i].Val
+		} else if node.Attr[i].Key == "title"{
+			title = node.Attr[i].Val
+		}
+	}
+	// render standard template
+	fmt.Println("Ok")
+	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title}
+	return renderStandardTemplate(ctx)
+}
