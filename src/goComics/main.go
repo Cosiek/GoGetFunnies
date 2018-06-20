@@ -21,6 +21,8 @@ func main() {
 	definitions = append(definitions, GetComic("buttersafe", "http://buttersafe.com/", Buttersafe))
 	definitions = append(definitions, GetComic("Hagar the Horrible", "http://hagarthehorrible.com/", HagarTheHorrible))
 	definitions = append(definitions, GetComic("xkcd", "https://xkcd.com/", Xkcd))
+	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
+
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
 	// gathering data
 	date := time.Now()

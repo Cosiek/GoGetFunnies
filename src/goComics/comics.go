@@ -96,3 +96,13 @@ func Xkcd(date time.Time, comic Comic)string{
 	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title}
 	return renderStandardTemplate(ctx)
 }
+
+
+func Sinfest(date time.Time, comic Comic)string{
+	// build url
+	imgUrl := "http://www.sinfest.net/btphp/comics/" + date.Format("2006-01-02") + ".gif"
+	// render standard template
+	fmt.Println("Ok")
+	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
+	return renderStandardTemplate(ctx)
+}
