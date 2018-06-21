@@ -36,6 +36,7 @@ func main() {
 			defer wg.Done()
 			comic = definitions[i]
 			definitions[i].HTML = comic.Function(date, comic)
+			fmt.Println(definitions[i].Name + "...OK")
 		}(i)
 	}
 	// wait for results

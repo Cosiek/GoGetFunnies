@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"strings"
 	"time"
 
@@ -12,11 +12,9 @@ import (
 
 func Buttersafe(date time.Time, comic Comic)string{
 	url := comic.Url
-	fmt.Printf("buttersafe....")
 
 	doc, err := GetDocument(url)
 	if err != nil { panic(err) }
-	fmt.Println("OK")
 
 	imgUrl := "#"
 	title := "Fial :("
@@ -34,22 +32,18 @@ func Buttersafe(date time.Time, comic Comic)string{
 
 func HagarTheHorrible(date time.Time, comic Comic)string{
 	url := comic.Url
-	fmt.Printf("Hagar the Horrible....")
 	imgSources := GetImagesSrcList(url)
 	for _, imgUrl := range imgSources{
 		if strings.Contains(imgUrl, "safr.kingfeatures.com/"){
-			fmt.Println("OK")
 			ctx := StdComicTemplateCtx{comic, imgUrl, ""}
 			return renderStandardTemplate(ctx)
 		}
 	}
-	fmt.Println("Fial")
 	return "Nope :("
 }
 
 
 func GoComics(date time.Time, comic Comic)string{
-	fmt.Printf(comic.Name + "....")
 	// make tight url for passed date
 	// (like https://www.gocomics.com/calvinandhobbes/2018/06/16)
 	url := comic.Url + date.Format("2006/01/02")
@@ -66,14 +60,12 @@ func GoComics(date time.Time, comic Comic)string{
 		}
 	}
 	// render standard template
-	fmt.Println("Ok")
 	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
 	return renderStandardTemplate(ctx)
 }
 
 
 func Xkcd(date time.Time, comic Comic)string{
-	fmt.Printf(comic.Name + "....")
 	// get document
 	doc, err := GetDocument(comic.Url)
 	if err != nil { panic(err) }
@@ -92,7 +84,6 @@ func Xkcd(date time.Time, comic Comic)string{
 		}
 	}
 	// render standard template
-	fmt.Println("Ok")
 	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title}
 	return renderStandardTemplate(ctx)
 }
@@ -102,7 +93,6 @@ func Sinfest(date time.Time, comic Comic)string{
 	// build url
 	imgUrl := "http://www.sinfest.net/btphp/comics/" + date.Format("2006-01-02") + ".gif"
 	// render standard template
-	fmt.Println("Ok")
 	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
 	return renderStandardTemplate(ctx)
 }

@@ -6,7 +6,6 @@ Also a playground to lern some more Go.
 
 ### TODO:
 
- - concurrency
  - error handling
  - name change
  - remote repository
