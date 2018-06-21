@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"sync"
 	"text/template"
 	"time"
 )
@@ -24,13 +25,22 @@ func main() {
 	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
 
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
-	// gathering data
+	// gathering data (async)
 	date := time.Now()
+	var comic Comic
+	var wg sync.WaitGroup
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
-		comic := definitions[i]
-		definitions[i].HTML = comic.Function(date, comic)
+		wg.Add(1)
+		go func (i int)  {
+			defer wg.Done()
+			comic = definitions[i]
+			definitions[i].HTML = comic.Function(date, comic)
+		}(i)
 	}
+	// wait for results
+	wg.Wait()
+
 	// rendering output file
 	fmt.Println("Rendering output")
 	templ, err := template.ParseFiles("main_template.html")
