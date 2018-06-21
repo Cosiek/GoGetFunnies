@@ -13,6 +13,13 @@ func GetComic(name string, url string, function func(date time.Time, comic Comic
   return Comic{name, url, function, ""}
 }
 
+
+type MainTemplateContext struct {
+	Date time.Time
+	Comics []Comic
+}
+
+
 type StdComicTemplateCtx struct {
   Comic Comic
   ImgSrc string

@@ -10,12 +10,6 @@ import (
 )
 
 
-type TemplateContext struct {
-	Date time.Time
-	Comics []Comic
-}
-
-
 func main() {
 	// definitions
 	definitions := make([]Comic, 0)
