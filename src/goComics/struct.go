@@ -5,11 +5,11 @@ import "time"
 type Comic struct {
   Name string
   Url string
-  Function func(date time.Time, comic Comic)string
+  Function func(date time.Time, comic Comic)(string, error)
   HTML string
 }
 
-func GetComic(name string, url string, function func(date time.Time, comic Comic)string) Comic {
+func GetComic(name string, url string, function func(date time.Time, comic Comic)(string, error)) Comic {
   return Comic{name, url, function, ""}
 }
 
@@ -24,4 +24,5 @@ type StdComicTemplateCtx struct {
   Comic Comic
   ImgSrc string
   Title string
+  ErrorMsg string
 }

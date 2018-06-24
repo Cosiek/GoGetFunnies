@@ -23,14 +23,19 @@ func main() {
 	date := time.Now()
 	var comic Comic
 	var wg sync.WaitGroup
+	var err error
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
 		wg.Add(1)
 		go func (i int)  {
 			defer wg.Done()
 			comic = definitions[i]
-			definitions[i].HTML = comic.Function(date, comic)
-			fmt.Println(definitions[i].Name + "...OK")
+			definitions[i].HTML, err = comic.Function(date, comic)
+			if err != nil{
+				fmt.Println(definitions[i].Name + "...Błąd")
+			} else {
+				fmt.Println(definitions[i].Name + "...OK")
+			}
 		}(i)
 	}
 	// wait for results
@@ -42,7 +47,7 @@ func main() {
 	if err != nil { panic(err) }
 	outFile, err := os.Create("komiksy.html")
 	if err != nil { panic(err) }
-	ctx := TemplateContext{date, definitions}
+	ctx := MainTemplateContext{date, definitions}
 	err = templ.Execute(outFile, ctx)
 	if err != nil { panic(err) }
 	outFile.Close()

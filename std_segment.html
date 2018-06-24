@@ -1,17 +1,32 @@
-<div class="row">
-  <div class="name">
-    <div>
-      <h1>
-        <a href="{{.Comic.Url}}">
-          {{.Comic.Name}}
-        </a>
-      </h1>
+{{ if .ErrorMsg }}
+  <div class="row">
+    <div class="name">
+      <div>
+        <h1>
+          <a href="{{.Comic.Url}}">
+            {{.Comic.Name}}
+          </a>
+        </h1>
+      </div>
     </div>
+    <div class="descr">{{.ErrorMsg}}</div>
   </div>
-  <div class="comic">
-    <img src="{{.ImgSrc}}" class="comic">
+{{ else }}
+  <div class="row">
+    <div class="name">
+      <div>
+        <h1>
+          <a href="{{.Comic.Url}}">
+            {{.Comic.Name}}
+          </a>
+        </h1>
+      </div>
+    </div>
+    <div class="comic">
+      <img src="{{.ImgSrc}}" class="comic">
+    </div>
+    {{ if .Title }}
+      <div class="descr">{{.Title}}</div>
+    {{ end }}
   </div>
-  {{ if .Title }}
-    <div class="descr">{{.Title}}</div>
-  {{ end }}
-</div>
+{{ end }}

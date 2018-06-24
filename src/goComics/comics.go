@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	// "fmt"
 	"strings"
 	"time"
@@ -10,11 +11,14 @@ import (
 
 // comic functions
 
-func Buttersafe(date time.Time, comic Comic)string{
+func Buttersafe(date time.Time, comic Comic)(string, error){
 	url := comic.Url
 
 	doc, err := GetDocument(url)
-	if err != nil { panic(err) }
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
 
 	imgUrl := "#"
 	title := "Fial :("
@@ -25,33 +29,42 @@ func Buttersafe(date time.Time, comic Comic)string{
 			title, _ = s.Attr("alt")
 		}
 	})
-	ctx := StdComicTemplateCtx{comic, imgUrl, title}
-	return renderStandardTemplate(ctx)
+	ctx := StdComicTemplateCtx{comic, imgUrl, title, ""}
+	return renderStandardTemplate(ctx), nil
 }
 
 
-func HagarTheHorrible(date time.Time, comic Comic)string{
-	url := comic.Url
-	imgSources := GetImagesSrcList(url)
+func HagarTheHorrible(date time.Time, comic Comic)(string, error){
+	imgSources := GetImagesSrcList(comic.Url)
 	for _, imgUrl := range imgSources{
 		if strings.Contains(imgUrl, "safr.kingfeatures.com/"){
-			ctx := StdComicTemplateCtx{comic, imgUrl, ""}
-			return renderStandardTemplate(ctx)
+			ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
+			return renderStandardTemplate(ctx), nil
 		}
 	}
-	return "Nope :("
+	errorMsg := "No image url containing \"safr.kingfeatures.com/\" found."
+	ctx := StdComicTemplateCtx{comic, "#", "", errorMsg}
+	return renderStandardTemplate(ctx), errors.New(errorMsg)
 }
 
 
-func GoComics(date time.Time, comic Comic)string{
-	// make tight url for passed date
+func GoComics(date time.Time, comic Comic)(string, error){
+	// make right url for passed date
 	// (like https://www.gocomics.com/calvinandhobbes/2018/06/16)
 	url := comic.Url + date.Format("2006/01/02")
 	// get html
 	doc, err := GetDocument(url)
-	if err != nil { panic(err) }
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
 	// get picture data
 	found := doc.Find("meta[name$=image]")
+	if len(found.Nodes) == 0 {
+		errorMsg := "Nie znalazłem obrazka. :("
+		ctx := StdComicTemplateCtx{comic, "", "", errorMsg}
+		return renderStandardTemplate(ctx), errors.New(errorMsg)
+	}
 	node := found.Nodes[0]
 	var imgUrl string
 	for i := 0; i < len(node.Attr); i++{
@@ -60,15 +73,18 @@ func GoComics(date time.Time, comic Comic)string{
 		}
 	}
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
-	return renderStandardTemplate(ctx)
+	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
+	return renderStandardTemplate(ctx), nil
 }
 
 
-func Xkcd(date time.Time, comic Comic)string{
+func Xkcd(date time.Time, comic Comic)(string, error){
 	// get document
 	doc, err := GetDocument(comic.Url)
-	if err != nil { panic(err) }
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
 	// get node
 	found := doc.Find("img")
 	node := found.Nodes[1]
@@ -84,15 +100,15 @@ func Xkcd(date time.Time, comic Comic)string{
 		}
 	}
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title}
-	return renderStandardTemplate(ctx)
+	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title, ""}
+	return renderStandardTemplate(ctx), nil
 }
 
 
-func Sinfest(date time.Time, comic Comic)string{
+func Sinfest(date time.Time, comic Comic)(string, error){
 	// build url
 	imgUrl := "http://www.sinfest.net/btphp/comics/" + date.Format("2006-01-02") + ".gif"
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, ""}
-	return renderStandardTemplate(ctx)
+	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
+	return renderStandardTemplate(ctx), nil
 }
