@@ -14,8 +14,10 @@ func main() {
 	// definitions
 	definitions := make([]Comic, 0)
 	definitions = append(definitions, GetComic("buttersafe", "http://buttersafe.com/", Buttersafe))
+	definitions = append(definitions, GetComic("abstrusegoose", "http://abstrusegoose.com/", Abstrusegoose))
 	definitions = append(definitions, GetComic("Hagar the Horrible", "http://hagarthehorrible.com/", HagarTheHorrible))
 	definitions = append(definitions, GetComic("xkcd", "https://xkcd.com/", Xkcd))
+	definitions = append(definitions, GetComic("Oglaf", "http://www.oglaf.com/", Oglaf))
 	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
 
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))

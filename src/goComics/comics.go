@@ -34,6 +34,54 @@ func Buttersafe(date time.Time, comic Comic)(string, error){
 }
 
 
+func Abstrusegoose(date time.Time, comic Comic)(string, error){
+	doc, err := GetDocument(comic.Url)
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
+
+	imgUrl := "#"
+	title := "Fial :("
+	alt := "Alt"
+	doc.Find("img").Each(func(i int, s *goquery.Selection){
+		_url, _ := s.Attr("src")
+		if strings.Contains(_url, "https://abstrusegoose.com/strips"){
+			imgUrl = _url
+			title, _ = s.Attr("title")
+			alt, _ = s.Attr("alt")
+		}
+	})
+	ctx := StdComicTemplateCtx{comic, imgUrl, title + " - " + alt, ""}
+	return renderStandardTemplate(ctx), nil
+}
+
+
+func Oglaf(date time.Time, comic Comic)(string, error){
+	doc, err := GetDocument(comic.Url)
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
+	// get node
+	found := doc.Find("#strip")
+	node := found.Nodes[0]
+	// get data
+	var imgUrl, title, alt string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = node.Attr[i].Val
+		} else if node.Attr[i].Key == "alt"{
+			alt = node.Attr[i].Val
+		} else if node.Attr[i].Key == "title"{
+			title = node.Attr[i].Val
+		}
+	}
+	ctx := StdComicTemplateCtx{comic, imgUrl, title + " - " + alt, ""}
+	return renderStandardTemplate(ctx), nil
+}
+
+
 func HagarTheHorrible(date time.Time, comic Comic)(string, error){
 	imgSources := GetImagesSrcList(comic.Url)
 	for _, imgUrl := range imgSources{
