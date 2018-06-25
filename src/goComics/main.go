@@ -30,7 +30,11 @@ func main() {
 	for i := 0; i < len(definitions); i++ {
 		wg.Add(1)
 		go func (i int)  {
+			defer func ()  {
+				if err := recover(); err != nil { /* just pass */ }
+			}()
 			defer wg.Done()
+
 			comic = definitions[i]
 			definitions[i].HTML, err = comic.Function(date, comic)
 			if err != nil{
