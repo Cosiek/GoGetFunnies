@@ -19,6 +19,7 @@ func main() {
 	definitions = append(definitions, GetComic("xkcd", "https://xkcd.com/", Xkcd))
 	definitions = append(definitions, GetComic("Oglaf", "http://www.oglaf.com/", Oglaf))
 	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
+	definitions = append(definitions, GetComic("The System", "http://www.systemcomic.com/", TheSystem))
 
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
 	// gathering data (async)

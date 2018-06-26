@@ -160,3 +160,28 @@ func Sinfest(date time.Time, comic Comic)(string, error){
 	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
 	return renderStandardTemplate(ctx), nil
 }
+
+
+func TheSystem(date time.Time, comic Comic)(string, error){
+	// get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil {
+		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
+		return renderStandardTemplate(ctx), err
+	}
+	// get node
+	found := doc.Find("img")
+	node := found.Nodes[0]
+	// get data
+	var imgUrl, alt string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = node.Attr[i].Val
+		} else if node.Attr[i].Key == "alt"{
+			alt = node.Attr[i].Val
+		}
+	}
+	// render standard template
+	ctx := StdComicTemplateCtx{comic, imgUrl, alt, ""}
+	return renderStandardTemplate(ctx), nil
+}
