@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	// "fmt"
+	//"fmt"
 	"strings"
 	"time"
 
@@ -149,6 +149,33 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 	}
 	// render standard template
 	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title, ""}
+	return renderStandardTemplate(ctx), nil
+}
+
+
+func johnhartstudiosImgUrl(date time.Time, urlBase string, short string) string {
+	urlBase += date.Format("2006/January/")
+	urlBase += short
+	urlBase += date.Format("010206")
+	if int(date.Weekday()) == 7 {urlBase += "sc.jpg"} else {urlBase += "dc.jpg"}
+	return strings.ToLower(urlBase)
+}
+
+
+func BC(date time.Time, comic Comic)(string, error){
+	// build url
+	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "bcstrips/", "bc")
+	// render standard template
+	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
+	return renderStandardTemplate(ctx), nil
+}
+
+
+func WizardOfId(date time.Time, comic Comic)(string, error){
+	// build url
+	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "wizardofidstrips/", "wiz")
+	// render standard template
+	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
 	return renderStandardTemplate(ctx), nil
 }
 
