@@ -22,6 +22,17 @@ func main() {
 	definitions = append(definitions, GetComic("The System", "http://www.systemcomic.com/", TheSystem))
 
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
+	definitions = append(definitions, GetComic("Barney & Clyde", "http://www.gocomics.com/barneyandclyde/", GoComics))
+	definitions = append(definitions, GetComic("Dark Side of the Horse", "http://www.gocomics.com/darksideofthehorse/", GoComics))
+	definitions = append(definitions, GetComic("The Barn", "https://www.gocomics.com/thebarn/", GoComics))
+	definitions = append(definitions, GetComic("Garfield", "https://www.gocomics.com/garfield/", GoComics))
+	definitions = append(definitions, GetComic("Nonsequitur", "http://www.gocomics.com/nonsequitur/", GoComics))
+	definitions = append(definitions, GetComic("Luann", "http://www.gocomics.com/luann/", GoComics))
+	definitions = append(definitions, GetComic("The Argyle Sweater", "http://www.gocomics.com/theargylesweater/", GoComics))
+	definitions = append(definitions, GetComic("Pearls Before Swine", "http://www.gocomics.com/pearlsbeforeswine/", GoComics))
+	definitions = append(definitions, GetComic("Liberty Meadows", "http://www.gocomics.com/libertymeadows/", GoComics))
+	definitions = append(definitions, GetComic("Texts from Mittens", "https://www.gocomics.com/texts-from-mittens/", GoComics))
+
 	// gathering data (async)
 	date := time.Now()
 	var comic Comic
