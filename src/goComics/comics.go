@@ -16,8 +16,7 @@ func Buttersafe(date time.Time, comic Comic)(string, error){
 
 	doc, err := GetDocument(url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 
 	imgUrl := "#"
@@ -29,16 +28,14 @@ func Buttersafe(date time.Time, comic Comic)(string, error){
 			title, _ = s.Attr("alt")
 		}
 	})
-	ctx := StdComicTemplateCtx{comic, imgUrl, title, ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, title, ""), nil
 }
 
 
 func Abstrusegoose(date time.Time, comic Comic)(string, error){
 	doc, err := GetDocument(comic.Url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 
 	imgUrl := "#"
@@ -52,16 +49,14 @@ func Abstrusegoose(date time.Time, comic Comic)(string, error){
 			alt, _ = s.Attr("alt")
 		}
 	})
-	ctx := StdComicTemplateCtx{comic, imgUrl, title + " - " + alt, ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, title + " - " + alt, ""), nil
 }
 
 
 func Oglaf(date time.Time, comic Comic)(string, error){
 	doc, err := GetDocument(comic.Url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 	// get node
 	found := doc.Find("#strip")
@@ -77,8 +72,7 @@ func Oglaf(date time.Time, comic Comic)(string, error){
 			title = node.Attr[i].Val
 		}
 	}
-	ctx := StdComicTemplateCtx{comic, imgUrl, title + " - " + alt, ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, title + " - " + alt, ""), nil
 }
 
 
@@ -86,13 +80,11 @@ func HagarTheHorrible(date time.Time, comic Comic)(string, error){
 	imgSources := GetImagesSrcList(comic.Url)
 	for _, imgUrl := range imgSources{
 		if strings.Contains(imgUrl, "safr.kingfeatures.com/"){
-			ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
-			return renderStandardTemplate(ctx), nil
+			return renderStd(comic, imgUrl, "", ""), nil
 		}
 	}
 	errorMsg := "No image url containing \"safr.kingfeatures.com/\" found."
-	ctx := StdComicTemplateCtx{comic, "#", "", errorMsg}
-	return renderStandardTemplate(ctx), errors.New(errorMsg)
+	return renderStd(comic, "#", "", errorMsg), errors.New(errorMsg)
 }
 
 
@@ -103,15 +95,13 @@ func GoComics(date time.Time, comic Comic)(string, error){
 	// get html
 	doc, err := GetDocument(url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 	// get picture data
 	found := doc.Find("meta[name$=image]")
 	if len(found.Nodes) == 0 {
 		errorMsg := "Nie znalazłem obrazka. :("
-		ctx := StdComicTemplateCtx{comic, "", "", errorMsg}
-		return renderStandardTemplate(ctx), errors.New(errorMsg)
+		return renderStd(comic, "", "", errorMsg), errors.New(errorMsg)
 	}
 	node := found.Nodes[0]
 	var imgUrl string
@@ -121,8 +111,7 @@ func GoComics(date time.Time, comic Comic)(string, error){
 		}
 	}
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, "", ""), nil
 }
 
 
@@ -130,8 +119,7 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 	// get document
 	doc, err := GetDocument(comic.Url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 	// get node
 	found := doc.Find("img")
@@ -148,8 +136,7 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 		}
 	}
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, alt + " - " + title, ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, alt + " - " + title, ""), nil
 }
 
 
@@ -166,8 +153,7 @@ func BC(date time.Time, comic Comic)(string, error){
 	// build url
 	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "bcstrips/", "bc")
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, "", ""), nil
 }
 
 
@@ -175,8 +161,7 @@ func WizardOfId(date time.Time, comic Comic)(string, error){
 	// build url
 	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "wizardofidstrips/", "wiz")
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, "", ""), nil
 }
 
 
@@ -184,8 +169,7 @@ func Sinfest(date time.Time, comic Comic)(string, error){
 	// build url
 	imgUrl := "http://www.sinfest.net/btphp/comics/" + date.Format("2006-01-02") + ".gif"
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, "", ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, "", ""), nil
 }
 
 
@@ -193,8 +177,7 @@ func TheSystem(date time.Time, comic Comic)(string, error){
 	// get document
 	doc, err := GetDocument(comic.Url)
 	if err != nil {
-		ctx := StdComicTemplateCtx{comic, "", "", err.Error()}
-		return renderStandardTemplate(ctx), err
+		return renderStd(comic, "", "", err.Error()), err
 	}
 	// get node
 	found := doc.Find("img")
@@ -209,6 +192,5 @@ func TheSystem(date time.Time, comic Comic)(string, error){
 		}
 	}
 	// render standard template
-	ctx := StdComicTemplateCtx{comic, imgUrl, alt, ""}
-	return renderStandardTemplate(ctx), nil
+	return renderStd(comic, imgUrl, alt, ""), nil
 }

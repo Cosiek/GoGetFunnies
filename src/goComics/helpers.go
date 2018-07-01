@@ -71,3 +71,9 @@ func renderStandardTemplate(ctx StdComicTemplateCtx)string{
 	if err != nil { panic(err) }
 	return rendered.String()
 }
+
+
+func renderStd(comic Comic, imgSrc string, title string, errMsg string)(string){
+	ctx := StdComicTemplateCtx{comic, imgSrc, title, errMsg}
+	return renderStandardTemplate(ctx)
+}
