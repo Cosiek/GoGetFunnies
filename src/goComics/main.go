@@ -23,6 +23,8 @@ func main() {
 	definitions = append(definitions, GetComic("The System", "http://www.systemcomic.com/", TheSystem))
 	definitions = append(definitions, GetComic("B.C.", "https://johnhartstudios.com/", BC))
 	definitions = append(definitions, GetComic("Wizard of ID", "https://johnhartstudios.com/", WizardOfId))
+	definitions = append(definitions, GetComic("Dilbert Czeski", "https://ekonomika.idnes.cz/dilbert.aspx", DilbertCzech))
+	definitions = append(definitions, GetComic("Dilbert", "http://dilbert.com/", Dilbert))
 
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
 	definitions = append(definitions, GetComic("Barney & Clyde", "http://www.gocomics.com/barneyandclyde/", GoComics))

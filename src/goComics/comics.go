@@ -140,6 +140,45 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 }
 
 
+func Dilbert(date time.Time, comic Comic)(string, error){
+	// get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil { return renderStd(comic, "", "", err.Error()), err }
+	// get node
+	found := doc.Find("img")
+	node := found.Nodes[2]
+	// get data
+	var imgUrl string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = node.Attr[i].Val
+			break
+		}
+	}
+	// render standard template
+	return renderStd(comic, imgUrl, "", ""), nil
+}
+
+
+func DilbertCzech(date time.Time, comic Comic)(string, error){
+	// get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil { return renderStd(comic, "", "", err.Error()), err }
+	// get node
+	found := doc.Find("img")
+	node := found.Nodes[0]
+	// get data
+	var imgUrl string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = node.Attr[i].Val
+			break
+		}
+	}
+	// render standard template
+	return renderStd(comic, imgUrl, "", ""), nil
+}
+
 
 func BC(date time.Time, comic Comic)(string, error){
 	// build url
