@@ -140,18 +140,13 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 }
 
 
-func johnhartstudiosImgUrl(date time.Time, urlBase string, short string) string {
-	urlBase += date.Format("2006/January/")
-	urlBase += short
-	urlBase += date.Format("010206")
-	if int(date.Weekday()) == 7 {urlBase += "sc.jpg"} else {urlBase += "dc.jpg"}
-	return strings.ToLower(urlBase)
-}
-
 
 func BC(date time.Time, comic Comic)(string, error){
 	// build url
-	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "bcstrips/", "bc")
+	imgUrl := comic.Url + "bcstrips/"
+	imgUrl += date.Format("2006/January/bc010206")
+	if int(date.Weekday()) == 7 {imgUrl += "sc.jpg"} else {imgUrl += "dc.jpg"}
+	imgUrl = strings.ToLower(imgUrl)
 	// render standard template
 	return renderStd(comic, imgUrl, "", ""), nil
 }
@@ -159,7 +154,15 @@ func BC(date time.Time, comic Comic)(string, error){
 
 func WizardOfId(date time.Time, comic Comic)(string, error){
 	// build url
-	imgUrl := johnhartstudiosImgUrl(date, comic.Url + "wizardofidstrips/", "wiz")
+	imgUrl := comic.Url + "wizardofidstrips/"
+	if int(date.Weekday()) == 7 {
+		// https://johnhartstudios.com/wizardofidstrips/2018/july/wiz18_0701sc.jpg
+		imgUrl += date.Format("2006/January/wiz06_0102sc.jpg")
+	} else {
+		// https://johnhartstudios.com/wizardofidstrips/2018/june/wiz062518dc.jpg
+		imgUrl += date.Format("2006/January/wiz010206dc.jpg")
+	}
+	imgUrl = strings.ToLower(imgUrl)
 	// render standard template
 	return renderStd(comic, imgUrl, "", ""), nil
 }
