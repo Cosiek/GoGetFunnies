@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"sync"
@@ -35,23 +36,33 @@ func main() {
 	definitions = append(definitions, GetComic("Liberty Meadows", "http://www.gocomics.com/libertymeadows/", GoComics))
 	definitions = append(definitions, GetComic("Texts from Mittens", "https://www.gocomics.com/texts-from-mittens/", GoComics))
 
+	var err error
+	// prepare logger
+	logFile, err := os.OpenFile("log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil { panic(err) }
+	defer logFile.Close()
+	log.SetOutput(logFile)
 	// gathering data (async)
 	date := time.Now()
 	var comic Comic
 	var wg sync.WaitGroup
-	var err error
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
 		wg.Add(1)
 		go func (i int)  {
 			defer func ()  {
-				if err := recover(); err != nil { /* just pass */ }
+				err := recover()
+				if err != nil {
+					log.Println(definitions[i].Name, " - ", err)
+					fmt.Println(definitions[i].Name + "...Błąd")
+				}
+				wg.Done()
 			}()
-			defer wg.Done()
 
 			comic = definitions[i]
 			definitions[i].HTML, err = comic.Function(date, comic)
 			if err != nil{
+				log.Println(definitions[i].Name, " - ", err)
 				fmt.Println(definitions[i].Name + "...Błąd")
 			} else {
 				fmt.Println(definitions[i].Name + "...OK")
