@@ -5,6 +5,7 @@
     <title>{{.Date.Year}}_{{.Date.Month}}_{{.Date.Day}}</title>
   </head>
   <body text="#000000" link="#ff00ff" bgcolor="#ffffff">
+    <div><a href="log.txt" target="_blank">Logi błędów</a></div>
     {{range .Comics}}
       {{.HTML}}
     {{end}}
