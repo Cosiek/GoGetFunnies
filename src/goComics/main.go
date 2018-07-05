@@ -39,6 +39,7 @@ func main() {
 	definitions = append(definitions, GetComic("Pearls Before Swine", "http://www.gocomics.com/pearlsbeforeswine/", GoComics))
 	definitions = append(definitions, GetComic("Liberty Meadows", "http://www.gocomics.com/libertymeadows/", GoComics))
 	definitions = append(definitions, GetComic("Texts from Mittens", "https://www.gocomics.com/texts-from-mittens/", GoComics))
+	definitions = append(definitions, GetComic("Pickles", "https://www.gocomics.com/pickles/", GoComics))
 
 	var err error
 	// prepare logger

@@ -9,4 +9,3 @@ Also a playground to lern some more Go.
  - name change
  - remote repository
  - enbeded templates
- - more comics
