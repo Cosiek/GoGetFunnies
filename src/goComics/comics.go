@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	//"fmt"
+	//"reflect"
 	"strings"
 	"time"
 
@@ -115,6 +116,27 @@ func GoComics(date time.Time, comic Comic)(string, error){
 }
 
 
+func PHDComic(date time.Time, comic Comic)(string, error){
+	// get html
+	doc, err := GetDocument(comic.Url)
+	if err != nil { return renderStd(comic, "", "", err.Error()), err }
+	// get picture data
+	imgUrl := ""
+	doc.Find("meta").Each(func(i int, s *goquery.Selection){
+		_url, _ := s.Attr("content")
+		if strings.Contains(_url, "phdcomics.com/comics/archive"){
+			imgUrl = _url
+		}
+	})
+	if len(imgUrl) == 0 {
+		errorMsg := "Nie znalazłem obrazka. :("
+		return renderStd(comic, "", "", errorMsg), errors.New(errorMsg)
+	}
+	// render standard template
+	return renderStd(comic, imgUrl, "", ""), nil
+}
+
+
 func Xkcd(date time.Time, comic Comic)(string, error){
 	// get document
 	doc, err := GetDocument(comic.Url)
@@ -137,6 +159,29 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 	}
 	// render standard template
 	return renderStd(comic, imgUrl, alt + " - " + title, ""), nil
+}
+
+
+func Astronomy_Picture_of_the_Day(date time.Time, comic Comic)(string, error){
+	// get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil { return renderStd(comic, "", "", err.Error()), err }
+	// get picture
+	found := doc.Find("img")
+	pictureNode := found.Nodes[0]
+	imgUrl := "http://apod.nasa.gov/apod/"
+	for i := 0; i < len(pictureNode.Attr); i++{
+		if pictureNode.Attr[i].Key == "src"{
+			imgUrl += pictureNode.Attr[i].Val
+			break
+		}
+	}
+	// get description
+	found = doc.Find("p")
+	textNode := goquery.NewDocumentFromNode(found.Nodes[2])
+	description, _ := textNode.Html()
+	// render standard template
+	return renderStd(comic, imgUrl, description, ""), nil
 }
 
 
