@@ -6,5 +6,7 @@ Also a playground to lern some more Go.
 
 ### TODO:
 
- - remote repository
  - enbeded templates
+ - hide NSFW
+ - sort comics
+ - commit compiled version
