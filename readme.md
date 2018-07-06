@@ -7,5 +7,4 @@ Also a playground to lern some more Go.
 ### TODO:
 
  - enbeded templates
- - sort comics
  - commit compiled version
