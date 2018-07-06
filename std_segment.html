@@ -23,7 +23,10 @@
       </div>
     </div>
     <div class="comic">
-      <img src="{{.ImgSrc}}" class="comic">
+      <img id="comic-{{ .Comic.Name }}" src="{{.ImgSrc}}" class="comic{{ if .Comic.Nsfw }} nsfw" style="display:none{{ end }}">
+      {{ if .Comic.Nsfw }}
+        <a class="js-toggle-image" data-for="comic-{{ .Comic.Name }}">Pokaż / Ukryj</a>
+      {{ end }}
     </div>
     {{ if .Title }}
       <div class="descr">{{.Title}}</div>

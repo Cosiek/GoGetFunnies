@@ -10,4 +10,15 @@
       {{.HTML}}
     {{end}}
   </body>
+  <script>
+    (function(){
+      for (node of document.getElementsByClassName("js-toggle-image")){
+        node.addEventListener("click", function(ev){
+          var imgNode = document.getElementById(this.dataset["for"]);
+          if (imgNode.style.display === "none"){ imgNode.style.display = "block"; }
+          else { imgNode.style.display = "none"; }
+        })
+      }
+    })()
+  </script>
 </html>

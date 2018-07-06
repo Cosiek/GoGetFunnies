@@ -7,10 +7,11 @@ type Comic struct {
   Url string
   Function func(date time.Time, comic Comic)(string, error)
   HTML string
+  Nsfw bool
 }
 
 func GetComic(name string, url string, function func(date time.Time, comic Comic)(string, error)) Comic {
-  return Comic{name, url, function, ""}
+  return Comic{name, url, function, "", false}
 }
 
 

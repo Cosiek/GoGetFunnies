@@ -21,6 +21,7 @@ func main() {
 	definitions = append(definitions, GetComic("PHD", "http://phdcomics.com/comics.php", PHDComic))
 	definitions = append(definitions, GetComic("APotD", "http://apod.nasa.gov/apod/", Astronomy_Picture_of_the_Day))
 	definitions = append(definitions, GetComic("Oglaf", "http://www.oglaf.com/", Oglaf))
+	definitions[len(definitions) - 1].Nsfw = true
 	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
 	definitions = append(definitions, GetComic("The System", "http://www.systemcomic.com/", TheSystem))
 	definitions = append(definitions, GetComic("B.C.", "https://johnhartstudios.com/", BC))
