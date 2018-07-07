@@ -42,9 +42,13 @@ func main() {
 	definitions = append(definitions, GetComic("Texts from Mittens", "https://www.gocomics.com/texts-from-mittens/", GoComics))
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
 
-	var err error
+	// prepare dir
+	const targetDirName = "komiksy/"
+	os.Mkdir(targetDirName, os.ModeDir)
 	// prepare logger
-	logFile, err := os.OpenFile("log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	var err error
+	logFile, err := os.OpenFile(targetDirName + "log.txt",
+		os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil { panic(err) }
 	defer logFile.Close()
 	log.SetOutput(logFile)
@@ -82,19 +86,19 @@ func main() {
 	fmt.Println("Rendering output")
 	templ, err := template.ParseFiles("main_template.html")
 	if err != nil { panic(err) }
-	outFile, err := os.Create("komiksy.html")
+	const targetFileName = targetDirName + "komiksy.html"
+	outFile, err := os.Create(targetFileName)
 	if err != nil { panic(err) }
 	ctx := MainTemplateContext{date, definitions}
 	err = templ.Execute(outFile, ctx)
 	if err != nil { panic(err) }
 	outFile.Close()
 	// saving an archive file
-	os.Mkdir("archive/", os.ModeDir)
-	dst := "archive/" + date.Format("2006-01-02") + ".html"
-	err = CopyFile("komiksy.html", dst)
+	dst := targetDirName + date.Format("2006-01-02") + ".html"
+	err = CopyFile(targetFileName, dst)
 	if err != nil { panic(err) }
 	// open the browser
-	err = exec.Command("xdg-open", "komiksy.html").Start()
+	err = exec.Command("xdg-open", targetFileName).Start()
 	if err != nil { panic(err) }
 	fmt.Println("Done")
 }

@@ -3,7 +3,5 @@
 goComics
 
 # output files
-archive/*
-komiksy.html
+komiksy/*
 comics.css
-log.txt
