@@ -56,3 +56,68 @@ img.comic {
 	margin-right: auto;
 }
 `
+
+const MAIN_TEMPLATE = `
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <link title="Default Comics" media="screen" href="comics.css" type="text/css" rel="stylesheet">
+    <title>{{.Date.Year}}_{{.Date.Month}}_{{.Date.Day}}</title>
+  </head>
+  <body text="#000000" link="#ff00ff" bgcolor="#ffffff">
+    <div><a href="log.txt" target="_blank">Logi błędów</a></div>
+    {{range .Comics}}
+      {{.HTML}}
+    {{end}}
+  </body>
+  <script>
+    (function(){
+      for (node of document.getElementsByClassName("js-toggle-image")){
+        node.addEventListener("click", function(ev){
+          var imgNode = document.getElementById(this.dataset["for"]);
+          if (imgNode.style.display === "none"){ imgNode.style.display = "block"; }
+          else { imgNode.style.display = "none"; }
+        })
+      }
+    })()
+  </script>
+</html>
+`
+
+const SEGMENT_TEMPLATE = `
+{{ if .ErrorMsg }}
+  <div class="row">
+    <div class="name">
+      <div>
+        <h1>
+          <a href="{{.Comic.Url}}">
+            {{.Comic.Name}}
+          </a>
+        </h1>
+      </div>
+    </div>
+    <div class="descr">{{.ErrorMsg}}</div>
+  </div>
+{{ else }}
+  <div class="row">
+    <div class="name">
+      <div>
+        <h1>
+          <a href="{{.Comic.Url}}">
+            {{.Comic.Name}}
+          </a>
+        </h1>
+      </div>
+    </div>
+    <div class="comic">
+      <img id="comic-{{ .Comic.Name }}" src="{{.ImgSrc}}" class="comic{{ if .Comic.Nsfw }} nsfw" style="display:none{{ end }}">
+      {{ if .Comic.Nsfw }}
+        <a class="js-toggle-image" data-for="comic-{{ .Comic.Name }}">Pokaż / Ukryj</a>
+      {{ end }}
+    </div>
+    {{ if .Title }}
+      <div class="descr">{{.Title}}</div>
+    {{ end }}
+  </div>
+{{ end }}
+`

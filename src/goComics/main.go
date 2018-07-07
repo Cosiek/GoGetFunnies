@@ -85,7 +85,7 @@ func main() {
 	writeCssFile(targetDirName)
 	// rendering output file
 	fmt.Println("Rendering output")
-	templ, err := template.ParseFiles("main_template.html")
+	templ, err := template.New("main").Parse(MAIN_TEMPLATE)
 	if err != nil { panic(err) }
 	const targetFileName = targetDirName + "komiksy.html"
 	outFile, err := os.Create(targetFileName)

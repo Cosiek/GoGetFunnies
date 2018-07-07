@@ -64,7 +64,7 @@ func CopyFile(src, dst string) error {
 }
 
 func renderStandardTemplate(ctx StdComicTemplateCtx)string{
-	templ, err := template.ParseFiles("std_segment.html")
+	templ, err := template.New("segment").Parse(SEGMENT_TEMPLATE)
 	if err != nil { panic(err) }
 	var rendered bytes.Buffer
 	err = templ.Execute(&rendered, ctx)

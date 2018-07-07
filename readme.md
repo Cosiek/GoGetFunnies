@@ -6,5 +6,4 @@ Also a playground to lern some more Go.
 
 ### TODO:
 
- - enbeded templates
  - commit compiled version
