@@ -90,10 +90,10 @@ func main() {
 	const targetFileName = targetDirName + "komiksy.html"
 	outFile, err := os.Create(targetFileName)
 	if err != nil { panic(err) }
+	defer outFile.Close()
 	ctx := MainTemplateContext{date, definitions}
 	err = templ.Execute(outFile, ctx)
 	if err != nil { panic(err) }
-	outFile.Close()
 	// saving an archive file
 	dst := targetDirName + date.Format("2006-01-02") + ".html"
 	err = CopyFile(targetFileName, dst)
