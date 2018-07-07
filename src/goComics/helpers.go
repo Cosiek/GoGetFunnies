@@ -77,3 +77,19 @@ func renderStd(comic Comic, imgSrc string, title string, errMsg string)(string){
 	ctx := StdComicTemplateCtx{comic, imgSrc, title, errMsg}
 	return renderStandardTemplate(ctx)
 }
+
+
+func writeCssFile(targetDirName string){
+	targetFilePath := targetDirName + "comics.css"
+	// check if file already exists
+	if _, err := os.Stat(targetFilePath); err == nil {
+	  return
+	}
+	// creata a file
+	outFile, err := os.Create(targetFilePath)
+	if err != nil { panic(err) }
+	defer outFile.Close()
+	// write
+	outFile.WriteString(CSS)
+	outFile.Sync()
+}

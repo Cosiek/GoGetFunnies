@@ -81,7 +81,8 @@ func main() {
 	}
 	// wait for results
 	wg.Wait()
-
+	// write css
+	writeCssFile(targetDirName)
 	// rendering output file
 	fmt.Println("Rendering output")
 	templ, err := template.ParseFiles("main_template.html")
