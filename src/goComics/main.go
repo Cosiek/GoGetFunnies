@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"sync"
 	"text/template"
 	"time"
@@ -42,11 +43,13 @@ func main() {
 	definitions = append(definitions, GetComic("Texts from Mittens", "https://www.gocomics.com/texts-from-mittens/", GoComics))
 	definitions = append(definitions, GetComic("Calvin and Hobbes", "https://www.gocomics.com/calvinandhobbes/", GoComics))
 
+	var err error
 	// prepare dir
-	const targetDirName = "komiksy/"
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil { panic(err) }
+	targetDirName := dir + "/komiksy/"
 	os.Mkdir(targetDirName, os.ModeDir)
 	// prepare logger
-	var err error
 	logFile, err := os.OpenFile(targetDirName + "log.txt",
 		os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil { panic(err) }
@@ -87,7 +90,7 @@ func main() {
 	fmt.Println("Rendering output")
 	templ, err := template.New("main").Parse(MAIN_TEMPLATE)
 	if err != nil { panic(err) }
-	const targetFileName = targetDirName + "komiksy.html"
+	targetFileName := targetDirName + "komiksy.html"
 	outFile, err := os.Create(targetFileName)
 	if err != nil { panic(err) }
 	defer outFile.Close()
