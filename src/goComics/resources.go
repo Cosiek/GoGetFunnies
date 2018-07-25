@@ -19,17 +19,11 @@ div.row {
 	margin-bottom: 0.875em;
 }
 
-a {
-	text-decoration: none;
-}
+a { text-decoration: none; }
 
-a:visited{
-    color: #6600CC;
-}
+a:visited{ color: #6600CC; }
 
-a:link{
-    color: #33CC33;
-}
+a:link{ color: #33CC33; }
 
 div.name {
 	float: left;
@@ -58,6 +52,7 @@ img.comic {
 `
 
 const MAIN_TEMPLATE = `
+<!DOCTYPE html>
 <html>
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="content-type">
@@ -69,46 +64,31 @@ const MAIN_TEMPLATE = `
     {{range .Comics}}
       {{.HTML}}
     {{end}}
+    <script>
+      (function(){
+        for (node of document.getElementsByClassName("js-toggle-image")){
+          node.addEventListener("click", function(ev){
+            var imgNode = document.getElementById(this.dataset["for"]);
+            if (imgNode.style.display === "none"){ imgNode.style.display = "block"; }
+            else { imgNode.style.display = "none"; }
+          })
+        }
+      })()
+    </script>
   </body>
-  <script>
-    (function(){
-      for (node of document.getElementsByClassName("js-toggle-image")){
-        node.addEventListener("click", function(ev){
-          var imgNode = document.getElementById(this.dataset["for"]);
-          if (imgNode.style.display === "none"){ imgNode.style.display = "block"; }
-          else { imgNode.style.display = "none"; }
-        })
-      }
-    })()
-  </script>
 </html>
 `
 
 const SEGMENT_TEMPLATE = `
-{{ if .ErrorMsg }}
-  <div class="row">
-    <div class="name">
-      <div>
-        <h1>
-          <a href="{{.Comic.Url}}">
-            {{.Comic.Name}}
-          </a>
-        </h1>
-      </div>
-    </div>
-    <div class="descr">{{.ErrorMsg}}</div>
+<div class="row">
+  <div class="name">
+    <h1>
+      <a href="{{.Comic.Url}}">{{.Comic.Name}}</a>
+    </h1>
   </div>
-{{ else }}
-  <div class="row">
-    <div class="name">
-      <div>
-        <h1>
-          <a href="{{.Comic.Url}}">
-            {{.Comic.Name}}
-          </a>
-        </h1>
-      </div>
-    </div>
+  {{ if .ErrorMsg }}
+    <div class="descr">{{.ErrorMsg}}</div>
+  {{ else }}
     <div class="comic">
       <img id="comic-{{ .Comic.Name }}" src="{{.ImgSrc}}" class="comic{{ if .Comic.Nsfw }} nsfw" style="display:none{{ end }}">
       {{ if .Comic.Nsfw }}
@@ -118,6 +98,6 @@ const SEGMENT_TEMPLATE = `
     {{ if .Title }}
       <div class="descr">{{.Title}}</div>
     {{ end }}
-  </div>
-{{ end }}
+  {{ end }}
+</div>
 `
