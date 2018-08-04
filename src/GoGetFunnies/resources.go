@@ -44,6 +44,19 @@ div.comic {
 	padding: 0.4em;
 }
 
+div.descr {
+	font-weight: bold;
+	font-size: 0.75em;
+	background-color: #e3e2cf;
+	border-right: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	padding-top: 0.875em;
+	margin-left: 170px;
+	padding: 10px;
+	text-align: center;
+}
+
 img.comic {
 	display: block;
 	margin-left: auto;
