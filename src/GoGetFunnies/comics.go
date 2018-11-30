@@ -200,6 +200,7 @@ func Dilbert(date time.Time, comic Comic)(string, error){
 			break
 		}
 	}
+	imgUrl = "https:" + imgUrl
 	// render standard template
 	return renderStd(comic, imgUrl, "", ""), nil
 }
