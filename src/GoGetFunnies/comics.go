@@ -162,6 +162,31 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 }
 
 
+func MonkeyUser(date time.Time, comic Comic)(string, error){
+    // get document
+	doc, err := GetDocument(comic.Url)
+	if err != nil {
+		return renderStd(comic, "", "", err.Error()), err
+	}
+	// get node
+	found := doc.Find("img")
+	node := found.Nodes[1]
+	// get data
+	var imgUrl, title, alt string
+	for i := 0; i < len(node.Attr); i++{
+		if node.Attr[i].Key == "src"{
+			imgUrl = node.Attr[i].Val
+		} else if node.Attr[i].Key == "alt"{
+			alt = node.Attr[i].Val
+		} else if node.Attr[i].Key == "title"{
+			title = node.Attr[i].Val
+		}
+	}
+	// render standard template
+	return renderStd(comic, imgUrl, alt + " - " + title, ""), nil
+}
+
+
 func Astronomy_Picture_of_the_Day(date time.Time, comic Comic)(string, error){
 	// get document
 	doc, err := GetDocument(comic.Url)
