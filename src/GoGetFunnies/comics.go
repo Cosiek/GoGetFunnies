@@ -170,7 +170,7 @@ func MonkeyUser(date time.Time, comic Comic)(string, error){
 	}
 	// get node
 	found := doc.Find("img")
-	node := found.Nodes[1]
+	node := found.Nodes[3]
 	// get data
 	var imgUrl, title, alt string
 	for i := 0; i < len(node.Attr); i++{
