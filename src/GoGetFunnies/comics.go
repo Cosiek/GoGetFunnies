@@ -145,7 +145,7 @@ func Xkcd(date time.Time, comic Comic)(string, error){
 	}
 	// get node
 	found := doc.Find("img")
-	node := found.Nodes[2]
+	node := found.Nodes[1]
 	// get data
 	var imgUrl, title, alt string
 	for i := 0; i < len(node.Attr); i++{
