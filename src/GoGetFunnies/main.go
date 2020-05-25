@@ -11,7 +11,6 @@ import (
 	"time"
 )
 
-
 func main() {
 	// definitions
 	definitions := make([]Comic, 0)
@@ -25,7 +24,7 @@ func main() {
 	definitions = append(definitions, GetComic("buttersafe", "http://buttersafe.com/", Buttersafe))
 	definitions = append(definitions, GetComic("Sinfest", "http://www.sinfest.net/", Sinfest))
 	definitions = append(definitions, GetComic("Oglaf", "http://www.oglaf.com/", Oglaf))
-	definitions[len(definitions) - 1].Nsfw = true
+	definitions[len(definitions)-1].Nsfw = true
 	definitions = append(definitions, GetComic("Dilbert Czeski", "https://ekonomika.idnes.cz/dilbert.aspx", DilbertCzech))
 	definitions = append(definitions, GetComic("Dilbert", "http://dilbert.com/", Dilbert))
 	definitions = append(definitions, GetComic("B.C.", "https://johnhartstudios.com/", BC))
@@ -43,13 +42,17 @@ func main() {
 	var err error
 	// prepare dir
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	targetDirName := dir + "/komiksy/"
 	os.Mkdir(targetDirName, os.ModeDir)
 	// prepare logger
-	logFile, err := os.OpenFile(targetDirName + "log.txt",
+	logFile, err := os.OpenFile(targetDirName+"log.txt",
 		os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	defer logFile.Close()
 	log.SetOutput(logFile)
 	// gathering data (async)
@@ -59,8 +62,8 @@ func main() {
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
 		wg.Add(1)
-		go func (i int)  {
-			defer func ()  {
+		go func(i int) {
+			defer func() {
 				err := recover()
 				if err != nil {
 					log.Println(definitions[i].Name, " - ", err)
@@ -71,7 +74,7 @@ func main() {
 
 			comic = definitions[i]
 			definitions[i].HTML, err = comic.Function(date, comic)
-			if err != nil{
+			if err != nil {
 				log.Println(definitions[i].Name, " - ", err)
 				fmt.Println(definitions[i].Name + "...Błąd")
 			} else {
@@ -86,20 +89,30 @@ func main() {
 	// rendering output file
 	fmt.Println("Rendering output")
 	templ, err := template.New("main").Parse(MAIN_TEMPLATE)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	targetFileName := targetDirName + "komiksy.html"
 	outFile, err := os.Create(targetFileName)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	defer outFile.Close()
 	ctx := MainTemplateContext{date, definitions}
 	err = templ.Execute(outFile, ctx)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	// saving an archive file
 	dst := targetDirName + date.Format("2006-01-02") + ".html"
 	err = CopyFile(targetFileName, dst)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	// open the browser
 	err = exec.Command("xdg-open", targetFileName).Start()
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("Done")
 }
