@@ -34,7 +34,6 @@ func main() {
 	definitions = append(definitions, GetComic("Barney & Clyde", "http://www.gocomics.com/barneyandclyde/", GoComics))
 	definitions = append(definitions, GetComic("Pickles", "https://www.gocomics.com/pickles/", GoComics))
 	definitions = append(definitions, GetComic("Luann", "http://www.gocomics.com/luann/", GoComics))
-	definitions = append(definitions, GetComic("Liberty Meadows", "http://www.gocomics.com/libertymeadows/", GoComics))
 	definitions = append(definitions, GetComic("Pearls Before Swine", "http://www.gocomics.com/pearlsbeforeswine/", GoComics))
 	definitions = append(definitions, GetComic("Dark Side of the Horse", "http://www.gocomics.com/darksideofthehorse/", GoComics))
 	definitions = append(definitions, GetComic("Nonsequitur", "http://www.gocomics.com/nonsequitur/", GoComics))
