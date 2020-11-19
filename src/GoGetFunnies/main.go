@@ -17,6 +17,7 @@ func main() {
 
 	definitions = append(definitions, GetComic("Hagar the Horrible", "http://hagarthehorrible.com/", HagarTheHorrible))
 	definitions = append(definitions, GetComic("xkcd", "https://xkcd.com/", Xkcd))
+	definitions = append(definitions, GetComic("CommitStrip", "https://www.commitstrip.com/en/", CommitStrip))
 	definitions = append(definitions, GetComic("MonkeyUser", "https://www.monkeyuser.com/", MonkeyUser))
 	definitions = append(definitions, GetComic("abstrusegoose", "http://abstrusegoose.com/", Abstrusegoose))
 	definitions = append(definitions, GetComic("PHD", "http://phdcomics.com/comics.php", PHDComic))

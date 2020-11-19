@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	//"fmt"
+
 	//"reflect"
 	"strings"
 	"time"
@@ -141,20 +142,50 @@ func Xkcd(date time.Time, comic Comic) (string, error) {
 	}
 	// get node
 	found := doc.Find("img")
-	node := found.Nodes[1]
+	//node := found.Nodes[1]
 	// get data
 	var imgUrl, title, alt string
-	for i := 0; i < len(node.Attr); i++ {
-		if node.Attr[i].Key == "src" {
-			imgUrl = "https:" + node.Attr[i].Val
-		} else if node.Attr[i].Key == "alt" {
-			alt = node.Attr[i].Val
-		} else if node.Attr[i].Key == "title" {
-			title = node.Attr[i].Val
+	for imgIdx := 0; imgIdx < len(found.Nodes); imgIdx++ {
+		node := found.Nodes[imgIdx]
+		for i := 0; i < len(node.Attr); i++ {
+			if node.Attr[i].Key == "src" {
+				imgUrl = "https:" + node.Attr[i].Val
+			} else if node.Attr[i].Key == "alt" {
+				alt = node.Attr[i].Val
+			} else if node.Attr[i].Key == "title" {
+				title = node.Attr[i].Val
+			}
+		}
+		// check if this is the right one
+		if strings.Contains(imgUrl, "imgs.xkcd.com/comics") {
+			break
 		}
 	}
 	// render standard template
 	return renderStd(comic, imgUrl, alt+" - "+title, ""), nil
+}
+
+func CommitStrip(date time.Time, comic Comic) (string, error) {
+	// get comics index page
+	doc, err := GetDocument(comic.Url)
+	if err != nil {
+		return renderStd(comic, "", "", err.Error()), err
+	}
+	// get url to latest comic
+	found := doc.Find(".excerpt")
+	node := found.Nodes[0]
+	doc = goquery.NewDocumentFromNode(node)
+	latestComicUrl, _ := doc.Find("a").Attr("href")
+	// get latest comic page
+	doc, err = GetDocument(latestComicUrl)
+	if err != nil {
+		return renderStd(comic, "", "", err.Error()), err
+	}
+	title := doc.Find(".entry-title").Text()
+	imgUrl, _ := doc.Find(".size-full").Attr("src")
+
+	// render standard template
+	return renderStd(comic, imgUrl, title, ""), nil
 }
 
 func MonkeyUser(date time.Time, comic Comic) (string, error) {
@@ -222,7 +253,6 @@ func Dilbert(date time.Time, comic Comic) (string, error) {
 			break
 		}
 	}
-	imgUrl = "https:" + imgUrl
 	// render standard template
 	return renderStd(comic, imgUrl, "", ""), nil
 }
