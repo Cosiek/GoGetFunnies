@@ -58,7 +58,6 @@ func main() {
 	log.SetOutput(logFile)
 	// gathering data (async)
 	date := time.Now()
-	var comic Comic
 	var wg sync.WaitGroup
 	fmt.Println("Starting")
 	for i := 0; i < len(definitions); i++ {
@@ -73,7 +72,7 @@ func main() {
 				wg.Done()
 			}()
 
-			comic = definitions[i]
+			comic := definitions[i]
 			definitions[i].HTML, err = comic.Function(date, comic)
 			if err != nil {
 				log.Println(definitions[i].Name, " - ", err)

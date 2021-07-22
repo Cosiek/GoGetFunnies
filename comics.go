@@ -306,7 +306,7 @@ func WizardOfId(date time.Time, comic Comic) (string, error) {
 
 func Sinfest(date time.Time, comic Comic) (string, error) {
 	// build url
-	imgUrl := "http://www.sinfest.net/btphp/comics/" + date.Format("2006-01-02") + ".gif"
+	imgUrl := "https://sinfest.xyz/btphp/comics/" + date.Format("2006-01-02") + ".jpg"
 	// render standard template
 	return renderStd(comic, imgUrl, "", ""), nil
 }
