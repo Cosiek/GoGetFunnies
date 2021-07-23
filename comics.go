@@ -284,7 +284,7 @@ func BC(date time.Time, comic Comic) (string, error) {
 	if int(date.Weekday()) == 0 {
 		imgUrl += date.Format("2006/January/bc06_0102sc.jpg")
 	} else {
-		imgUrl += date.Format("2006/January/bc010206dc.jpg")
+		imgUrl += date.Format("2006/January/bc010206d_zoom_s.jpg")
 	}
 	imgUrl = strings.ToLower(imgUrl)
 	// render standard template
@@ -297,7 +297,7 @@ func WizardOfId(date time.Time, comic Comic) (string, error) {
 	if int(date.Weekday()) == 0 {
 		imgUrl += date.Format("2006/January/wiz06_0102sc.jpg")
 	} else {
-		imgUrl += date.Format("2006/January/wiz010206dc.jpg")
+		imgUrl += date.Format("2006/January/wiz010206d_zoom_s.jpg")
 	}
 	imgUrl = strings.ToLower(imgUrl)
 	// render standard template
