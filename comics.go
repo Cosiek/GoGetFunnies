@@ -33,26 +33,6 @@ func Buttersafe(date time.Time, comic Comic) (string, error) {
 	return renderStd(comic, imgUrl, title, ""), nil
 }
 
-func Abstrusegoose(date time.Time, comic Comic) (string, error) {
-	doc, err := GetDocument(comic.Url)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-
-	imgUrl := "#"
-	title := "Fial :("
-	alt := "Alt"
-	doc.Find("img").Each(func(i int, s *goquery.Selection) {
-		_url, _ := s.Attr("src")
-		if strings.Contains(_url, "https://abstrusegoose.com/strips") {
-			imgUrl = _url
-			title, _ = s.Attr("title")
-			alt, _ = s.Attr("alt")
-		}
-	})
-	return renderStd(comic, imgUrl, title+" - "+alt, ""), nil
-}
-
 func Oglaf(date time.Time, comic Comic) (string, error) {
 	doc, err := GetDocument(comic.Url)
 	if err != nil {
@@ -112,28 +92,6 @@ func GoComics(date time.Time, comic Comic) (string, error) {
 	return renderStd(comic, imgUrl, "", ""), nil
 }
 
-func PHDComic(date time.Time, comic Comic) (string, error) {
-	// get html
-	doc, err := GetDocument(comic.Url)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-	// get picture data
-	imgUrl := ""
-	doc.Find("meta").Each(func(i int, s *goquery.Selection) {
-		_url, _ := s.Attr("content")
-		if strings.Contains(_url, "phdcomics.com/comics/archive") {
-			imgUrl = _url
-		}
-	})
-	if len(imgUrl) == 0 {
-		errorMsg := "Nie znalazłem obrazka. :("
-		return renderStd(comic, "", "", errorMsg), errors.New(errorMsg)
-	}
-	// render standard template
-	return renderStd(comic, imgUrl, "", ""), nil
-}
-
 func Xkcd(date time.Time, comic Comic) (string, error) {
 	// get document
 	doc, err := GetDocument(comic.Url)
@@ -163,29 +121,6 @@ func Xkcd(date time.Time, comic Comic) (string, error) {
 	}
 	// render standard template
 	return renderStd(comic, imgUrl, alt+" - "+title, ""), nil
-}
-
-func CommitStrip(date time.Time, comic Comic) (string, error) {
-	// get comics index page
-	doc, err := GetDocument(comic.Url)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-	// get url to latest comic
-	found := doc.Find(".excerpt")
-	node := found.Nodes[0]
-	doc = goquery.NewDocumentFromNode(node)
-	latestComicUrl, _ := doc.Find("a").Attr("href")
-	// get latest comic page
-	doc, err = GetDocument(latestComicUrl)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-	title := doc.Find(".entry-title").Text()
-	imgUrl, _ := doc.Find(".size-full").Attr("src")
-
-	// render standard template
-	return renderStd(comic, imgUrl, title, ""), nil
 }
 
 func MonkeyUser(date time.Time, comic Comic) (string, error) {
@@ -234,48 +169,6 @@ func Astronomy_Picture_of_the_Day(date time.Time, comic Comic) (string, error) {
 	description, _ := textNode.Html()
 	// render standard template
 	return renderStd(comic, imgUrl, description, ""), nil
-}
-
-func Dilbert(date time.Time, comic Comic) (string, error) {
-	// get document
-	doc, err := GetDocument(comic.Url)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-	// get node
-	found := doc.Find("img")
-	node := found.Nodes[2]
-	// get data
-	var imgUrl string
-	for i := 0; i < len(node.Attr); i++ {
-		if node.Attr[i].Key == "src" {
-			imgUrl = node.Attr[i].Val
-			break
-		}
-	}
-	// render standard template
-	return renderStd(comic, imgUrl, "", ""), nil
-}
-
-func DilbertCzech(date time.Time, comic Comic) (string, error) {
-	// get document
-	doc, err := GetDocument(comic.Url)
-	if err != nil {
-		return renderStd(comic, "", "", err.Error()), err
-	}
-	// get node
-	found := doc.Find("img")
-	node := found.Nodes[0]
-	// get data
-	var imgUrl string
-	for i := 0; i < len(node.Attr); i++ {
-		if node.Attr[i].Key == "src" {
-			imgUrl = node.Attr[i].Val
-			break
-		}
-	}
-	// render standard template
-	return renderStd(comic, imgUrl, "", ""), nil
 }
 
 func BC(date time.Time, comic Comic) (string, error) {
